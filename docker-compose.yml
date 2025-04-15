@@ -1,8 +1,9 @@
 version: '3.8'
+name: listic
 
 services:
   db:
-    image: postgres:15
+    image: postgres:17.4
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -11,31 +12,26 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  backend:
+  backend-dev:
     build:
       context: ./backend
-    command: gunicorn listic.wsgi:application --bind 0.0.0.0:8000
+      target: dev-image
+    command: gunicorn listic.asgi:application --bind 0.0.0.0:8000 --worker-class uvicorn.workers.UvicornWorker --reload
     volumes:
       - ./backend:/app
-      - static_volume:/app/staticfiles # For static files
     ports:
       - "8000:8000"
     env_file:
       - ./backend/.env
     depends_on:
-      - db
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/app/staticfiles # Mount static files volume
-    depends_on:
-      - backend
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-  static_volume:

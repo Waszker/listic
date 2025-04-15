@@ -1,5 +1,7 @@
-# Use an official Python runtime as a parent image
-FROM python:3.13-slim
+###########################
+# Production image
+###########################
+FROM python:3.13-slim as prod-image
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install poetry
-RUN pip install poetry==1.7.1 # Pinning poetry version for stability
+RUN pip install poetry==2.1.2 # Pinning poetry version for stability
 
 # Copy only requirements to cache them
 COPY pyproject.toml poetry.lock* ./
@@ -24,11 +26,10 @@ COPY pyproject.toml poetry.lock* ./
 RUN poetry config virtualenvs.create false && \
     poetry install --no-root --no-dev --no-interaction --no-ansi
 
-# Copy project
-COPY . .
+###########################
+# Development image
+###########################
+FROM prod-image as dev-image
 
-# Expose port 8000
-EXPOSE 8000
-
-# Run the application
-CMD ["gunicorn", "listic.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-root --dev --no-interaction --no-ansi
