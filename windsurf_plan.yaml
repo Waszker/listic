@@ -24,9 +24,9 @@ tech_stack:
     - LLMs (e.g., GPT) for recipe parsing, ingredient matching, and learning user preferences
 
 milestones:
-  - name: Setup project
+  - name: Setup backend project
     description: >
-      Set up the project structure, virtual environment, and initial dependencies.
+      Set up the backend project structure, virtual environment, and initial dependencies.
     tasks:
       - Initialize a new Django project
       - Set up a PostgreSQL database
@@ -40,6 +40,23 @@ milestones:
       - Docker Compose is set up
       - Initial project structure is created
       - Project can be started by running `docker compose up`
+      - Repository dev readme is populated with the initial setup instructions
+
+  - name: Setup frontend project
+    description: >
+      Set up the frontend project structure, virtual environment, and initial dependencies.
+    tasks:
+      - Initialize a new React project
+      - Install dependencies
+      - Create initial project structure
+      - Set up Docker Compose
+    acceptance criteria:
+      - Project structure is set up
+      - Dependencies are installed
+      - Docker Compose is set up
+      - Initial project structure is created
+      - Project can be started by running `docker compose up`
+      - Repository dev readme is populated with the initial setup instructions
 
   - name: Define data models
     description: >
