@@ -24,7 +24,7 @@ COPY pyproject.toml poetry.lock* ./
 
 # Install project dependencies
 RUN poetry config virtualenvs.create false && \
-    poetry install --no-root --no-dev --no-interaction --no-ansi
+    poetry install --no-root --no-interaction --no-ansi --without dev
 
 ###########################
 # Development image
@@ -32,4 +32,4 @@ RUN poetry config virtualenvs.create false && \
 FROM prod-image as dev-image
 
 RUN poetry config virtualenvs.create false && \
-    poetry install --no-root --dev --no-interaction --no-ansi
+    poetry install --no-root --no-interaction --no-ansi
