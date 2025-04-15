@@ -11,10 +11,8 @@ django = "*"
 djangorestframework = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
-pyyaml = "*"
 gunicorn = "*"
-langchain = "*"
-openai = "*"
+uvicorn = "*" # Added for ASGI support with Gunicorn
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.11.0"
