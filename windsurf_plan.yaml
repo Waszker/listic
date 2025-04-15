@@ -1,0 +1,100 @@
+objective: >
+  Build a web application that uses AI agents to generate optimized shopping lists,
+  considering store layouts, current pantry inventory, and recipes sourced from websites or entered manually.
+
+tech_stack:
+  common:
+    - docker
+    - docker-compose
+    - git
+    - github
+  backend:
+    - Python
+    - poetry
+    - Django
+    - Django Rest Framework
+    - PostgreSQL
+    - Nginx
+  frontend:
+    - TypeScript
+    - React
+    - Tailwind CSS
+    - Material UI
+  ai_agents:
+    - LLMs (e.g., GPT) for recipe parsing, ingredient matching, and learning user preferences
+
+milestones:
+  - name: Setup project
+    description: >
+      Set up the project structure, virtual environment, and initial dependencies.
+    tasks:
+      - Initialize a new Django project
+      - Set up a PostgreSQL database
+      - Install dependencies
+      - Create initial project structure
+      - Set up Docker Compose
+    acceptance criteria:
+      - Project structure is set up
+      - PostgreSQL database is configured
+      - Dependencies are installed
+      - Docker Compose is set up
+      - Initial project structure is created
+      - Project can be started by running `docker compose up`
+
+  - name: Define data models
+    description: >
+      Design the core data structure for products, stores, layouts, pantry inventory, and recipes.
+    tasks:
+      - Create a `Product` model with name, unit, quantity, and category
+      - Create a `Store` model with layout (ordered list of categories)
+      - Create a `UserInventory` model representing the user’s pantry
+      - Create `Recipe` and `RecipeIngredient` models
+
+  - name: Extract ingredients from recipes
+    description: >
+      Implement an AI agent that parses recipe text and extracts structured ingredients (name, quantity, unit).
+    tasks:
+      - Allow users to paste a recipe as plain text or provide a recipe URL
+      - Use an AI agent to extract structured ingredient data
+      - Normalize ingredient names and match to known products
+
+  - name: Match ingredients with pantry inventory
+    description: >
+      Compare required ingredients with the user’s current inventory to determine what needs to be purchased.
+    tasks:
+      - Compare quantities and units between ingredients and inventory
+      - Compute quantity differences and prepare shopping list
+      - Exclude ingredients already sufficiently stocked
+
+  - name: Optimize shopping list based on store layout
+    description: >
+      Sort the shopping list according to the user’s selected store layout.
+    tasks:
+      - Retrieve the store layout associated with the user
+      - Assign categories to each product
+      - Sort the shopping list based on the store’s section order
+
+  - name: Web interface and authentication
+    description: >
+      Build a responsive web interface with user registration, login, and session management.
+    tasks:
+      - Develop backend API using Django (with Django Rest Framework)
+      - Build frontend using React + Tailwind CSS
+      - Implement authentication (JWT or session-based)
+      - Allow users to manage recipes, stores, inventory, and preferences
+
+  - name: Personalization and habit learning
+    description: >
+      Track and learn from user corrections (e.g., category changes, quantity/unit edits).
+    tasks:
+      - Store user-specific corrections as `UserCorrection` entries
+      - Apply learned preferences in future AI decisions
+      - Allow users to view, edit, or reset their personalization data
+
+  - name: (Optional) Promotions and price optimization
+    description: >
+      Integrate store circulars or APIs to recommend the cheapest options for products on the list.
+    tasks:
+      - Implement scrapers or integrations with store APIs
+      - Map list products to current store promotions
+      - Generate an alternate, price-optimized shopping list
