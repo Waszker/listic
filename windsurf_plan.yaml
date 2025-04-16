@@ -94,7 +94,7 @@ milestones:
         - Define `ShoppingAlley` model:
           - Fields: `name` (CharField), `order` (IntegerField).
           - Many-to-one relationship with `Shop`.
-          - Many-to-one relationship with `User` (or `Shop` related to `User` directly).
+          - Indirectly related to `User` via `Shop` (which has a Many-to-one relationship with `User`).
     acceptance criteria:
       - All models (`User`, `UserStash`, `UnitCategory` enum, `Unit`, `UnitConversion`, `IngredientCategory`, `Ingredient`, `Recipe`, `RecipeIngredient`, `RecipeInstruction`, `Shop`, `ShoppingAlley`) are defined in appropriate `models.py` files within Django apps.
       - Relationships between models are correctly established using Django's ORM fields (ForeignKey, ManyToManyField, OneToOneField where applicable).
