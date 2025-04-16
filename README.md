@@ -29,8 +29,8 @@
     This command will build the Docker images (if they don't exist or have changed) and start the backend, database, and Nginx services.
 
 4.  **Access the Application:**
-    - The backend API will be available at [http://localhost:80/api/](http://localhost:80/api/)
-    - The Django admin interface will be at [http://localhost:80/admin/](http://localhost:80/admin/)
+    - The backend API will be available at [http://localhost:8000/api/](http://localhost:8000/api/)
+    - The Django admin interface will be at [http://localhost:8000/admin/](http://localhost:8000/admin/)
 
 5.  **Initial Database Setup (First Time Only):**
     After the containers are running, you need to apply database migrations and create a superuser for the Django admin:
