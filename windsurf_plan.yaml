@@ -58,14 +58,51 @@ milestones:
       - Project can be started by running `docker compose up`
       - Repository dev readme is populated with the initial setup instructions
 
-  - name: Define data models
+  - name: Initial Data Models and Related Objects
     description: >
-      Design the core data structure for products, stores, layouts, pantry inventory, and recipes.
+      Define the core data models for users, their places (inventory), ingredients, recipes, and shops.
     tasks:
-      - Create a `Product` model with name, unit, quantity, and category
-      - Create a `Store` model with layout (ordered list of categories)
-      - Create a `UserInventory` model representing the user’s pantry
-      - Create `Recipe` and `RecipeIngredient` models
+      - Define `User` model (custom, override default Django user model)
+      - Define `UserStash` model:
+        - Represents user ingredient "stashes".
+        - Many-to-one relationship with `User` (owner).
+        - Many-to-many relationship with `User` for collaborators (with fine-grained permissions: view, manage for each user and related models (e.g., Ingredient, Recipe, etc.)).
+      - Define `UnitCategory` enum:
+        - Categories: Volumetric, Mass, Other
+      - Define `Unit` model:
+        - Fields: `name` (CharField), `category` (UnitCategory).
+        - Values within categories (e.g., "grams", "milliliters", "teaspoon").
+        - Many-to-one relationship with `User`.
+      - Define `UnitConversion` model:
+        - Fields: `from_unit` (ForeignKey to Unit), `to_unit` (ForeignKey to Unit), `conversion_factor` (DecimalField).
+        - Example: 1000ml = 1L
+        - Many-to-one relationship with `User`.
+      - Define `IngredientCategory` model:
+        - List of common categories (e.g., Spices, Fruit, Meat, Dairy, Vegetables).
+      - Define `Ingredient` model:
+        - Fields: `name` (CharField), `unit` (ForeignKey to Unit or CharField with choices), `value` (DecimalField), `category` (ForeignKey to IngredientCategory).
+        - Many-to-one relationship with `UserPlace`.
+      - Define `Recipe` model:
+        - Fields: `name` (CharField), `description` (TextField).
+        - Many-to-one relationship with `User` (creator).
+        - Many-to-many relationship with `Ingredient` (through a `RecipeIngredient` intermediate model specifying quantity/unit for the recipe).
+      - Define `RecipeInstruction` model:
+        - Fields: `text` (TextField), `order` (IntegerField).
+        - Many-to-one relationship with `Recipe`.
+      - Define `Shop` model:
+        - Fields: `user` (Many-to-one relationship with `User`), `name` (CharField).
+        - Define `ShoppingAlley` model:
+          - Fields: `name` (CharField), `order` (IntegerField).
+          - Many-to-one relationship with `Shop`.
+          - Many-to-one relationship with `User` (or `Shop` related to `User` directly).
+    acceptance criteria:
+      - All models (`User`, `UserStash`, `UnitCategory` enum, `Unit`, `UnitConversion`, `IngredientCategory`, `Ingredient`, `Recipe`, `RecipeIngredient`, `RecipeInstruction`, `Shop`, `ShoppingAlley`) are defined in appropriate `models.py` files within Django apps.
+      - Relationships between models are correctly established using Django's ORM fields (ForeignKey, ManyToManyField, OneToOneField where applicable).
+      - Necessary fields and their types (CharField, TextField, IntegerField, DecimalField, etc.) are defined for each model.
+      - Enum/choices for `UnitCategory` are defined.
+      - Fine-grained permissions for `UserStash` collaboration are outlined or implemented.
+      - Initial database migration files are generated successfully using `makemigrations`.
+      - Migrations can be applied successfully using `migrate`.
 
   - name: Extract ingredients from recipes
     description: >
